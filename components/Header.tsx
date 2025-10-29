@@ -4,7 +4,7 @@ import NavItems from "@/components/NavItems";
 import UserDropdown from "@/components/userDropdown";
 
 
-const Header =  () => {
+const Header =  ({user}: {user:User}) => {
     // const initialStocks = await searchStocks();
 
     return (
@@ -17,7 +17,7 @@ const Header =  () => {
                     <NavItems  />
                 </nav>
 
-                <UserDropdown />
+                <UserDropdown user={user} />
             </div>
         </header>
     )
