@@ -1,7 +1,8 @@
 import { betterAuth } from "better-auth";
-import { mongodbAdapter} from "better-auth/adapters/mongodb";
-import { connectToDatabase} from "@/database/mongoose";
-import { nextCookies} from "better-auth/next-js";
+import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { connectToDatabase } from "@/database/mongoose";
+import { nextCookies } from "better-auth/next-js";
+import type { Db } from "mongodb";
 
 // Singleton pattern to ensure a single instance of BetterAuth
 let authInstance: ReturnType<typeof betterAuth> | null = null;
@@ -15,7 +16,7 @@ export const getAuth = async () => {
     if(!db) throw new Error('MongoDB connection not found');
 
     authInstance = betterAuth({
-        database: mongodbAdapter(db as any), //updates the schema
+        database: mongodbAdapter(db as Db), // Type assertion to MongoDB's Db type
         secret: process.env.BETTER_AUTH_SECRET,
         baseURL: process.env.BETTER_AUTH_URL,
         emailAndPassword: {
