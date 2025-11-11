@@ -39,7 +39,6 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           />
         </div>
 
-        {/* Right column */}
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <WatchlistButton symbol={symbol.toUpperCase()} company={symbol.toUpperCase()} isInWatchlist={false} />

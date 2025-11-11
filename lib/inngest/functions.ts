@@ -1,16 +1,16 @@
 import {inngest} from "@/lib/inngest/client";
 import {NEWS_SUMMARY_EMAIL_PROMPT, PERSONALIZED_WELCOME_EMAIL_PROMPT} from "@/lib/inngest/prompts";
-import {sendNewsSummaryEmail, sendWelcomeEmail} from "@/lib/nodemailer";
+import {sendNewsSummaryEmail, sendWelcomeEmail, sendWatchlistSummaryEmail} from "@/lib/nodemailer";
 import {getAllUsersForNewsEmail} from "@/lib/actions/user.actions";
-import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
-import { getNews } from "@/lib/actions/finnhub.actions";
+import { getWatchlistSymbolsByEmail, getWatchlistByEmail } from "@/lib/actions/watchlist.actions";
+import { getNews, getBatchQuotes } from "@/lib/actions/finnhub.actions";
 import { getFormattedTodayDate } from "@/lib/utils";
 
 type UserForNewsEmail = {
     email: string;
     name: string;
-
 };
+
 export const sendSignUpEmail = inngest.createFunction(
     { id: 'sign-up-email' },
     { event: 'app/user.created'},
@@ -85,7 +85,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
             return perUser;
         });
 
-        // Step #3: (placeholder) Summarize news via AI
+        // Step #3: Summarize news via AI
         const userNewsSummaries: { user: UserForNewsEmail; newsContent: string | null }[] = [];
 
         for (const { user, articles } of results) {
@@ -109,7 +109,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
                 }
             }
 
-        // Step #4: (placeholder) Send the emails
+        // Step #4: Send the emails
         await step.run('send-news-emails', async () => {
                 await Promise.all(
                     userNewsSummaries.map(async ({ user, newsContent}) => {
@@ -123,3 +123,81 @@ export const sendDailyNewsSummary = inngest.createFunction(
         return { success: true, message: 'Daily news summary emails sent successfully' }
     }
 )
+
+// NEW: Daily Watchlist Summary with Stock Prices
+export const sendDailyWatchlistSummary = inngest.createFunction(
+    { id: 'daily-watchlist-summary' },
+    [ { event: 'app/send.watchlist.summary' }, { cron: '0 9 * * *' } ], // 9 AM daily
+    async ({ step }) => {
+        // Step #1: Get all users
+        const users = await step.run('get-all-users', getAllUsersForNewsEmail);
+
+        if (!users || users.length === 0) {
+            return { success: false, message: 'No users found' };
+        }
+
+        // Step #2: Process each user's watchlist
+        const results = await step.run('process-watchlists', async () => {
+            const processed = [];
+            
+            for (const user of users as UserForNewsEmail[]) {
+                try {
+                    const watchlistItems = await getWatchlistByEmail(user.email);
+                    
+                    if (!watchlistItems || watchlistItems.length === 0) {
+                        continue; // Skip users with empty watchlists
+                    }
+
+                    const symbols = watchlistItems.map(item => item.symbol);
+                    const quotes = await getBatchQuotes(symbols);
+
+                    processed.push({
+                        user,
+                        watchlistItems,
+                        quotes,
+                    });
+                } catch (e) {
+                    console.error('Error processing watchlist for', user.email, e);
+                }
+            }
+            
+            return processed;
+        });
+
+        // Step #3: Send emails
+        await step.run('send-watchlist-emails', async () => {
+            await Promise.all(
+                results.map(async ({ user, watchlistItems, quotes }) => {
+                    try {
+                        // Format watchlist data for email
+                        const stocks = watchlistItems.map(item => {
+                            const quote = quotes[item.symbol];
+                            return {
+                                symbol: item.symbol,
+                                company: item.company,
+                                price: quote ? quote.c.toFixed(2) : '--',
+                                change: quote ? quote.d.toFixed(2) : '--',
+                                changePercent: quote ? quote.dp.toFixed(2) : '--',
+                                isPositive: quote ? quote.d >= 0 : true,
+                            };
+                        });
+
+                        await sendWatchlistSummaryEmail({
+                            email: user.email,
+                            name: user.name,
+                            date: getFormattedTodayDate(),
+                            stocks,
+                        });
+                    } catch (e) {
+                        console.error('Error sending watchlist email to', user.email, e);
+                    }
+                })
+            );
+        });
+
+        return { 
+            success: true, 
+            message: `Watchlist summaries sent to ${results.length} users` 
+        };
+    }
+);
