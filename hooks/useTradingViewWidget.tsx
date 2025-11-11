@@ -1,30 +1,59 @@
 'use client';
 import { useEffect, useRef } from "react";
 
-const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>, height = 600) => {
-    const containerRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-        if (!containerRef.current) return;
-        if (containerRef.current.dataset.loaded) return;
-        containerRef.current.innerHTML = `<div class="tradingview-widget-container__widget" style="width: 100%; height: ${height}px;"></div>`;
+const loadedScripts = new Set<string>();
 
-        const script = document.createElement("script");
-        script.src = scriptUrl;
-        script.async = true;
-        script.innerHTML = JSON.stringify(config);
+const useTradingViewWidget = (
+  scriptUrl: string, 
+  config: Record<string, unknown>, 
+  height = 600
+) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const scriptRef = useRef<HTMLScriptElement | null>(null);
 
-        containerRef.current.appendChild(script);
-        containerRef.current.dataset.loaded = 'true';
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || container.dataset.loaded) return;
 
-        return () => {
-            if (containerRef.current) {
-                containerRef.current.innerHTML = '';
-                delete containerRef.current.dataset.loaded;
-            }
-        }
-    }, [scriptUrl, config, height])
 
-    return containerRef;
-}
-export default useTradingViewWidget
+    const widgetDiv = document.createElement('div');
+    widgetDiv.className = 'tradingview-widget-container__widget';
+    widgetDiv.style.width = '100%';
+    widgetDiv.style.height = `${height}px`;
+    container.appendChild(widgetDiv);
+
+
+    if (!loadedScripts.has(scriptUrl)) {
+      const script = document.createElement('script');
+      script.src = scriptUrl;
+      script.async = true;
+      script.innerHTML = JSON.stringify(config);
+      
+      script.onload = () => loadedScripts.add(scriptUrl);
+      
+      container.appendChild(script);
+      scriptRef.current = script;
+    } else {
+
+      const script = document.createElement('script');
+      script.innerHTML = JSON.stringify(config);
+      container.appendChild(script);
+      scriptRef.current = script;
+    }
+
+    container.dataset.loaded = 'true';
+
+
+    return () => {
+      if (scriptRef.current && scriptRef.current.parentNode) {
+        scriptRef.current.remove();
+      }
+
+    };
+  }, [scriptUrl, config, height]);
+
+  return containerRef;
+};
+
+export default useTradingViewWidget;
