@@ -253,21 +253,25 @@
     .stock-details-container {
         @apply w-full grid-cols-1 gap-6 xl:grid-cols-3 space-y-6 sm:space-y-8;
     }
-    .watchlist-btn {
-        @apply bg-yellow-500 text-base hover:bg-yellow-500 text-gray-900 w-full rounded h-11 font-semibold cursor-pointer;
-    }
-    .watchlist-remove {
-        @apply bg-red-500! hover:bg-red-500! text-gray-900!
-    }
+.watchlist-btn {
+  @apply px-4 py-2 text-sm font-medium rounded-xl border border-gray-700 text-gray-300 
+         bg-gradient-to-b from-[#141414] to-[#0a0a0a]
+         hover:bg-[#1c1c1c] hover:text-[var(--accent)]
+         transition-all duration-200 ease-in-out flex items-center;
+}
+.watchlist-remove {
+  @apply bg-[var(--accent)] text-black border-[var(--accent)]
+         hover:bg-[#9a8cff] hover:border-[#9a8cff];
+}
     .watchlist-empty-container {
         @apply container gap-8 flex-col items-center md:mt-10 p-6 text-center;
     }
     .watchlist-empty {
         @apply flex flex-col items-center justify-center text-center;
     }
-    .watchlist-star {
-        @apply h-16 w-16 text-gray-500 mb-4;
-    }
+  .watchlist-star {
+  @apply w-6 h-6 transition-all duration-200;
+}
     .empty-title {
         @apply text-xl font-semibold text-gray-400 mb-2;
     }
@@ -283,12 +287,12 @@
     .watchlist-alerts {
         @apply items-start gap-6 h-full flex-col w-full lg:col-span-1;
     }
-    .watchlist-icon-btn {
-        @apply w-fit cursor-pointer hover:bg-transparent! text-gray-400 hover:text-yellow-500;
-    }
-    .watchlist-icon-added {
-        @apply !text-yellow-500 hover:!text-yellow-600;
-    }
+ .watchlist-icon-btn {
+@apply p-2 rounded-full bg-transparent hover:bg-zinc-800/70 transition-all duration-200 ease-in-out flex items-center justify-center cursor-pointer;
+}
+   .watchlist-icon-added {
+  @apply bg-zinc-900/60 hover:bg-zinc-900 ring-1 ring-yellow-400;
+}
     .watchlist-icon {
         @apply w-8 h-8 rounded-full flex items-center justify-center bg-gray-700/50;
     }

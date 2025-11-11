@@ -1108,3 +1108,118 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </table>
 </body>
 </html>`;
+
+// Add this export to your lib/nodemailer/templates.ts
+
+export const WATCHLIST_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Your Watchlist Summary</title>
+    <style type="text/css">
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            .email-container {
+                background-color: #141414 !important;
+                border: 1px solid #30333A !important;
+            }
+            .dark-bg {
+                background-color: #050505 !important;
+            }
+            .dark-text {
+                color: #ffffff !important;
+            }
+            .dark-text-secondary {
+                color: #9ca3af !important;
+            }
+            .dark-border {
+                border-color: #30333A !important;
+            }
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            .mobile-padding {
+                padding: 24px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+    <div style="padding: 40px 20px;">
+        <table class="email-container" role="presentation" style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            
+            <!-- Header -->
+            <tr>
+                <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 32px; text-align: center;">
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
+                        📊 Your Watchlist Update
+                    </h1>
+                    <p style="margin: 12px 0 0 0; font-size: 16px; color: rgba(255, 255, 255, 0.9);">
+                        {{date}}
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+                <td class="mobile-padding" style="padding: 40px 32px;">
+                    <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: #374151;">
+                        Hi <strong>{{name}}</strong>,
+                    </p>
+                    <p style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: #374151;">
+                        Here's today's summary for the <strong>{{stockCount}}</strong> stock(s) you're watching:
+                    </p>
+
+                    <!-- Watchlist Table -->
+                    <table role="presentation" style="width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb;">
+                        <thead>
+                            <tr style="background-color: #f9fafb;">
+                                <th style="padding: 12px; text-align: left; font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    Stock
+                                </th>
+                                <th style="padding: 12px; text-align: right; font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    Price
+                                </th>
+                                <th style="padding: 12px; text-align: right; font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    Change
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{stockRows}}
+                        </tbody>
+                    </table>
+
+                    <!-- CTA Button -->
+                    <div style="text-align: center; margin-top: 40px;">
+                        <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/watchlist" 
+                           style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
+                            View Full Watchlist →
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td style="padding: 32px; background-color: #f9fafb; text-align: center; border-top: 1px solid #e5e7eb;">
+                    <p style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #374151;">
+                        Stay informed. Trade smart.
+                    </p>
+                    <p style="margin: 0; font-size: 13px; color: #9ca3af;">
+                        You're receiving this because you have an active watchlist on Signalist
+                    </p>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</body>
+</html>`;

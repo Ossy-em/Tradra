@@ -19,6 +19,69 @@ interface FinnhubSearchResultWithExchange extends FinnhubSearchResult {
   __exchange?: string;
 }
 
+// Add these functions to your existing lib/actions/finnhub.actions.ts
+
+export interface StockQuote {
+  c: number;  // Current price
+  d: number;  // Change
+  dp: number; // Percent change
+  h: number;  // High price of the day
+  l: number;  // Low price of the day
+  o: number;  // Open price of the day
+  pc: number; // Previous close price
+  t: number;  // Timestamp
+}
+
+export async function getStockQuote(symbol: string): Promise<StockQuote | null> {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      console.error('FINNHUB API key is not configured');
+      return null;
+    }
+
+    const url = `${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(symbol)}&token=${token}`;
+    const quote = await fetchJSON<StockQuote>(url, 60); // Cache for 1 minute
+    
+    // Finnhub returns { c: 0 } for invalid symbols
+    if (quote.c === 0 && quote.d === 0) {
+      return null;
+    }
+
+    return quote;
+  } catch (error) {
+    console.error(`Error fetching quote for ${symbol}:`, error);
+    return null;
+  }
+}
+
+export async function getBatchQuotes(symbols: string[]): Promise<Record<string, StockQuote>> {
+  const quotes: Record<string, StockQuote> = {};
+  
+  // Finnhub doesn't have a batch endpoint, so we'll fetch in parallel
+  // But limit concurrency to avoid rate limits (60 calls/min on free tier)
+  const batchSize = 10;
+  
+  for (let i = 0; i < symbols.length; i += batchSize) {
+    const batch = symbols.slice(i, i + batchSize);
+    const batchPromises = batch.map(async (symbol) => {
+      const quote = await getStockQuote(symbol);
+      if (quote) {
+        quotes[symbol] = quote;
+      }
+    });
+    
+    await Promise.all(batchPromises);
+    
+    // Add small delay between batches to respect rate limits
+    if (i + batchSize < symbols.length) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+
+  return quotes;
+}
+
 async function fetchJSON<T>(url: string, revalidateSeconds?: number): Promise<T> {
   const options: RequestInit & { next?: { revalidate?: number } } = revalidateSeconds
     ? { cache: 'force-cache', next: { revalidate: revalidateSeconds } }
