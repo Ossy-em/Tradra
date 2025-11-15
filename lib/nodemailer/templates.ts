@@ -5,7 +5,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="x-apple-disable-message-reformatting">
-    <title>Welcome to Signalist</title>
+    <title>Welcome to Tradra</title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -1108,8 +1108,6 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </table>
 </body>
 </html>`;
-
-// Add this export to your lib/nodemailer/templates.ts
 
 export const WATCHLIST_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
 <html lang="en">

@@ -11,7 +11,7 @@ const ComparisonPageWrapper = async () => {
 
   const session = await auth.api.getSession({ headers: await headers() });
 
-  if (!session?.user) redirect('/sign-in');
+  if (!session?.user) redirect('/auth/sign-in');
 
   const user = {
     id: session.user.id,

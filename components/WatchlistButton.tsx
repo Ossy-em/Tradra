@@ -1,4 +1,4 @@
-// components/WatchlistButton.tsx
+
 'use client';
 
 import { Star } from 'lucide-react';
@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 interface WatchlistButtonProps {
   symbol: string;
-  company: string; // Now required
+  company: string;
   className?: string;
   showLabel?: boolean;
   onWatchlistChange?: (symbol: string, isAdded: boolean) => void;
@@ -31,7 +31,7 @@ export default function WatchlistButton({
     setIsAnimating(true);
     await toggleWatchlist(symbol, company);
     
-    // Callback for parent components
+
     if (onWatchlistChange) {
       onWatchlistChange(symbol, !isAdded);
     }

@@ -1,13 +1,14 @@
 'use server';
 
 import { connectToDatabase } from '@/database/mongoose';
-import { Watchlist } from '@/database/models/watchlist.model';
+import { getWatchlistModel } from '@/database/models';
 
 export async function getWatchlistSymbolsByEmail(email: string): Promise<string[]> {
   if (!email) return [];
 
   try {
     const mongoose = await connectToDatabase();
+    const Watchlist = await getWatchlistModel(); // Lazy load
     const db = mongoose.connection.db;
     if (!db) throw new Error('MongoDB connection not found');
 
@@ -25,12 +26,12 @@ export async function getWatchlistSymbolsByEmail(email: string): Promise<string[
   }
 }
 
-// NEW: Get full watchlist items with company names
 export async function getWatchlistByEmail(email: string): Promise<Array<{ symbol: string; company: string; addedAt: Date }>> {
   if (!email) return [];
 
   try {
     const mongoose = await connectToDatabase();
+    const Watchlist = await getWatchlistModel(); // Lazy load
     const db = mongoose.connection.db;
     if (!db) throw new Error('MongoDB connection not found');
 
@@ -52,7 +53,6 @@ export async function getWatchlistByEmail(email: string): Promise<Array<{ symbol
   }
 }
 
-// NEW: Add to watchlist
 export async function addToWatchlist(email: string, symbol: string, company: string): Promise<{ success: boolean; message: string }> {
   if (!email || !symbol || !company) {
     return { success: false, message: 'Missing required fields' };
@@ -60,6 +60,7 @@ export async function addToWatchlist(email: string, symbol: string, company: str
 
   try {
     const mongoose = await connectToDatabase();
+    const Watchlist = await getWatchlistModel(); // Lazy load
     const db = mongoose.connection.db;
     if (!db) throw new Error('MongoDB connection not found');
 
@@ -73,7 +74,6 @@ export async function addToWatchlist(email: string, symbol: string, company: str
       return { success: false, message: 'Invalid user ID' };
     }
 
-    // Check if already exists
     const existing = await Watchlist.findOne({ userId, symbol: symbol.toUpperCase() });
     if (existing) {
       return { success: false, message: 'Already in watchlist' };
@@ -93,7 +93,6 @@ export async function addToWatchlist(email: string, symbol: string, company: str
   }
 }
 
-// NEW: Remove from watchlist
 export async function removeFromWatchlist(email: string, symbol: string): Promise<{ success: boolean; message: string }> {
   if (!email || !symbol) {
     return { success: false, message: 'Missing required fields' };
@@ -101,6 +100,7 @@ export async function removeFromWatchlist(email: string, symbol: string): Promis
 
   try {
     const mongoose = await connectToDatabase();
+    const Watchlist = await getWatchlistModel(); // Lazy load
     const db = mongoose.connection.db;
     if (!db) throw new Error('MongoDB connection not found');
 
@@ -123,12 +123,12 @@ export async function removeFromWatchlist(email: string, symbol: string): Promis
   }
 }
 
-// NEW: Check if symbol is in watchlist
 export async function isInWatchlist(email: string, symbol: string): Promise<boolean> {
   if (!email || !symbol) return false;
 
   try {
     const mongoose = await connectToDatabase();
+    const Watchlist = await getWatchlistModel(); // Lazy load
     const db = mongoose.connection.db;
     if (!db) throw new Error('MongoDB connection not found');
 

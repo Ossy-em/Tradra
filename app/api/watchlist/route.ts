@@ -9,7 +9,7 @@ import {
   getWatchlistSymbolsByEmail 
 } from '@/lib/actions/watchlist.actions';
 
-// Helper to get user email from Better Auth session
+
 async function getUserEmail(): Promise<string | null> {
   try {
     const session = await auth.api.getSession({ 
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ 
       items: symbols,
-      details: items // Include full details with company names
+      details: items 
     });
   } catch (error) {
     console.error('GET /api/watchlist error:', error);

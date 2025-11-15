@@ -14,7 +14,7 @@ const NavItems = ({ initialStocks }: { initialStocks: StockWithWatchlistStatus[]
   };
 
   return (
-    <ul className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 font-medium text-sm tracking-wide">
+    <ul className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm">
       {NAV_ITEMS.map(({ href, label }) => {
         if (href === "/search")
           return (
@@ -31,10 +31,10 @@ const NavItems = ({ initialStocks }: { initialStocks: StockWithWatchlistStatus[]
           <li key={href}>
             <Link
               href={href}
-              className={`transition-colors duration-200 hover:text-[var(--color-accent)] ${
+              className={`transition-colors duration-200 ${
                 isActive(href)
-                  ? "text-[var(--color-accent)] font-semibold"
-                  : "text-gray-300"
+                  ? "text-white font-medium"
+                  : "text-gray-400 hover:text-white"
               }`}
             >
               {label}
