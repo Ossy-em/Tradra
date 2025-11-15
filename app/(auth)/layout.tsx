@@ -1,47 +1,60 @@
 import Link from "next/link";
-import Image from "next/image";
-// import {auth} from "@/lib/better-auth/auth";
-import {headers} from "next/headers";
-import {redirect} from "next/navigation";
+import { auth } from "@/lib/better-auth/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { TrendingUp } from 'lucide-react';
 
-const Layout = async ({ children }: { children : React.ReactNode }) => {
-    // const session = await auth.api.getSession({ headers: await headers() })
 
-    // if(session?.user) redirect('/')
+const TradraLogo = () => (
+  <Link href="/landing" className="group inline-flex items-center gap-2">
+    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-500 flex items-center justify-center group-hover:scale-105 transition-transform">
+      <TrendingUp className="w-5 h-5 text-black" strokeWidth={2.5} />
+    </div>
+    <span className="text-2xl font-bold text-white tracking-tight">
+      Tradra
+    </span>
+  </Link>
+);
 
+const Layout = async ({ children }: { children: React.ReactNode }) => {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (session?.user) redirect('/dashboard');
+    
     return (
-        <main className="auth-layout">
-            <section className="auth-left-section scrollbar-hide-default">
-                <Link href="/" className="auth-logo">
-                    <Image src="/assets/icons/logo.svg" alt="Signalist logo" width={140} height={32} className='h-8 w-auto' />
-                </Link>
+        <main className="min-h-screen bg-black">
+            {/* Background Effects */}
+            <div className="fixed inset-0 bg-gradient-to-b from-black via-gray-950 to-black" />
+            <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+            
+            {/* Glow effect */}
+            <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
 
-                <div className="pb-6 lg:pb-8 flex-1">{children}</div>
-            </section>
+           
+            <div className="relative min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="w-full max-w-md">
+                 
+                    <div className="mb-12">
+                        <TradraLogo />
+                    </div>
 
-            <section className="auth-right-section">
-                <div className="z-10 relative lg:mt-4 lg:mb-16">
-                    <blockquote className="auth-blockquote">
-                        Signalist turned my watchlist into a winning list. The alerts are spot-on, and I feel more confident making moves in the market
-                    </blockquote>
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <cite className="auth-testimonial-author">- Ethan R.</cite>
-                            <p className="max-md:text-xs text-gray-500">Retail Investor</p>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <Image src="/assets/icons/star.svg" alt="Star" key={star} width={20} height={20} className="w-5 h-5" />
-                            ))}
+                   
+                    <div className="relative">
+                       
+                        <div className="absolute inset-0 bg-white/[0.02] border border-white/5 rounded-xl backdrop-blur-sm -z-10" />
+                        
+                        <div className="p-8">
+                            {children}
                         </div>
                     </div>
-                </div>
 
-                <div className="flex-1 relative">
-                    <Image src="/assets/images/dashboard.png" alt="Dashboard Preview" width={1440} height={1150} className="auth-dashboard-preview absolute top-0" />
+             
+                    <p className="text-center text-sm text-gray-500 mt-8">
+                        © 2025 Tradra. All rights reserved.
+                    </p>
                 </div>
-            </section>
+            </div>
         </main>
-    )
-}
-export default Layout
+    );
+};
+
+export default Layout;

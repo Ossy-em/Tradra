@@ -1,15 +1,18 @@
 import Link from "next/link";
 
 const FooterLink = ({ text, linkText, href }: FooterLinkProps) => {
-    return (
-        <div className="text-center pt-4">
-            <p className="text-sm text-gray-500">
-                {text}{` `}
-                <Link href={href} className="footer-link">
-                    {linkText}
-                </Link>
-            </p>
-        </div>
-    )
+   
+      return (
+        <p className="text-center text-sm text-gray-400 pt-4">
+            {text}{' '}
+            <Link 
+                href={href} 
+                className="text-white font-medium hover:text-gray-300 transition-colors underline-offset-4 hover:underline"
+            >
+                {linkText}
+            </Link>
+        </p>
+    );
+    
 }
 export default FooterLink
