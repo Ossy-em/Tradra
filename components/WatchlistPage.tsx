@@ -2,9 +2,9 @@
 
 import { useWatchlist } from '@/hooks/useWatchlist';
 import WatchlistButton from '@/components/WatchlistButton';
-import { TrendingUp, Loader2, ArrowUp, ArrowDown } from 'lucide-react'; // Removed Sparkles
+import { TrendingUp, Loader2, ArrowUp, ArrowDown } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState, useCallback } from 'react'; // Added useCallback
+import { useEffect, useState, useCallback } from 'react'; 
 
 interface StockData {
   symbol: string;
@@ -18,7 +18,7 @@ export default function WatchlistPage() {
   const [stockData, setStockData] = useState<Record<string, StockData>>({});
   const [loadingPrices, setLoadingPrices] = useState(false);
 
-  // Wrap fetchStockPrices in useCallback to fix the dependency warning
+
   const fetchStockPrices = useCallback(async () => {
     setLoadingPrices(true);
     try {
@@ -213,7 +213,7 @@ export default function WatchlistPage() {
                     </span>
                   </div>
 
-                  {/* Hover glow */}
+           
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-teal-500/0 to-purple-500/0 group-hover:from-teal-500/5 group-hover:to-purple-500/5 transition-all duration-300 pointer-events-none -z-10" />
                 </Link>
               );

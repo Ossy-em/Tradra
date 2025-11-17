@@ -1,6 +1,6 @@
-// app/api/stocks/batch-quotes/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getBatchQuotes } from '@/lib/actions/finnhub.actions';
+import { StockQuote } from '@/types/stocks'; 
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,10 +12,19 @@ export async function POST(req: NextRequest) {
 
     const quotes = await getBatchQuotes(symbols);
 
-    // Transform Finnhub response to our format
-    const stockData: Record<string, any> = {};
+
+    const stockData: Record<string, {
+      symbol: string;
+      price: number;
+      change: number;
+      changePercent: number;
+      high: number;
+      low: number;
+      open: number;
+      previousClose: number;
+    }> = {};
     
-    for (const [symbol, quote] of Object.entries(quotes)) {
+    for (const [symbol, quote] of Object.entries(quotes) as [string, StockQuote][]) {
       stockData[symbol] = {
         symbol,
         price: quote.c,
@@ -35,7 +44,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Optional: Also support GET for simple queries
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -48,9 +56,18 @@ export async function GET(req: NextRequest) {
     const symbols = symbolsParam.split(',').map(s => s.trim()).filter(Boolean);
     const quotes = await getBatchQuotes(symbols);
 
-    const stockData: Record<string, any> = {};
+    const stockData: Record<string, {
+      symbol: string;
+      price: number;
+      change: number;
+      changePercent: number;
+      high: number;
+      low: number;
+      open: number;
+      previousClose: number;
+    }> = {};
     
-    for (const [symbol, quote] of Object.entries(quotes)) {
+    for (const [symbol, quote] of Object.entries(quotes) as [string, StockQuote][]) {
       stockData[symbol] = {
         symbol,
         price: quote.c,

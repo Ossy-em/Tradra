@@ -1230,43 +1230,31 @@ export function generateEmailTemplate<T extends EmailType>(
   data: Omit<EmailDataMap[T], "to">
 ): EmailTemplate {
   switch (type) {
-    case "welcome": {
-      const { name } = data as Omit<EmailDataMap["welcome"], "to">;
-      return {
-        subject: "Welcome to Tradra!",
-        html: WELCOME_EMAIL_TEMPLATE.replace("{{name}}", name),
-        text: `Welcome to Tradra, ${name}!`,
-      };
-    }
+   case "welcome": {
+  const { name, intro } = data as Omit<EmailDataMap["welcome"], "to">;
+  const introText = intro || "Welcome to your stock tracking journey!";
+  
+  return {
+    subject: "Welcome to Tradra!",
+    html: WELCOME_EMAIL_TEMPLATE
+      .replace("{{name}}", name)
+      .replace("{{intro}}", introText),
+    text: `Welcome to Tradra, ${name}! ${introText}`,
+  };
+}
 
-    case "news-summary": {
-      const { name, articles } = data as Omit<EmailDataMap["news-summary"], "to">;
-      
-      // Generate articles HTML
-      const articlesHtml = articles
-        .map(
-          (article) => `
-          <div style="margin-bottom: 20px; padding: 15px; background: #f9fafb; border-radius: 8px;">
-            <h3 style="margin: 0 0 8px 0; color: #111827;">
-              <a href="${article.url}" style="color: #2563eb; text-decoration: none;">${article.title}</a>
-            </h3>
-            <p style="margin: 0 0 8px 0; color: #4b5563; font-size: 14px;">${article.summary}</p>
-            <div style="font-size: 12px; color: #6b7280;">
-              <span>${article.source}</span> • <span>${new Date(article.publishedAt).toLocaleDateString()}</span>
-            </div>
-          </div>
-        `
-        )
-        .join("");
-
-      return {
-        subject: "Your Daily News Summary",
-        html: NEWS_SUMMARY_EMAIL_TEMPLATE
-          .replace("{{name}}", name)
-          .replace("{{articles}}", articlesHtml),
-        text: `Daily News Summary for ${name}`,
-      };
-    }
+   case "news-summary": {
+  const { name, date, newsContent } = data as Omit<EmailDataMap["news-summary"], "to">;
+  
+  return {
+    subject: `Your Daily News Summary - ${date}`,
+    html: NEWS_SUMMARY_EMAIL_TEMPLATE
+      .replace("{{name}}", name)
+      .replace("{{date}}", date)
+      .replace("{{newsContent}}", newsContent),
+    text: `Daily News Summary for ${name} - ${date}: ${newsContent}`,
+  };
+}
 
     case "stock-alert": {
       const { name, symbol, stockName, alertType, triggerPrice, currentPrice } = 
@@ -1321,53 +1309,52 @@ export function generateEmailTemplate<T extends EmailType>(
       };
     }
 
-    case "watchlist-summary": {
-      const { name, stocks, totalPortfolioValue } = 
-        data as Omit<EmailDataMap["watchlist-summary"], "to">;
-      
-      // Generate stocks HTML
-      const stocksHtml = stocks
-        .map(
-          (stock) => {
-            const isPositive = stock.change >= 0;
-            const changeColor = isPositive ? "#16a34a" : "#dc2626";
-            const changeSymbol = isPositive ? "+" : "";
-            
-            return `
-          <tr>
-            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
-              <strong style="color: #111827;">${stock.symbol}</strong><br/>
-              <span style="color: #6b7280; font-size: 12px;">${stock.name}</span>
-            </td>
-            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">
-              $${stock.currentPrice.toFixed(2)}
-            </td>
-            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; color: ${changeColor};">
-              ${changeSymbol}$${stock.change.toFixed(2)}<br/>
-              <span style="font-size: 12px;">(${changeSymbol}${stock.changePercent.toFixed(2)}%)</span>
-            </td>
-          </tr>
-        `;
-          }
-        )
-        .join("");
+ case "watchlist-summary": {
+  const { name, date, stocks, totalPortfolioValue } = 
+    data as Omit<EmailDataMap["watchlist-summary"], "to">;
 
-      const portfolioSection = totalPortfolioValue
-        ? `<p style="margin: 20px 0; padding: 15px; background: #f0fdf4; border-radius: 8px; text-align: center;">
-             <strong style="color: #166534;">Total Portfolio Value:</strong> 
-             <span style="font-size: 24px; color: #15803d;">$${totalPortfolioValue.toLocaleString()}</span>
-           </p>`
-        : "";
+  const stocksHtml = stocks
+    .map(
+      (stock) => {
+        const changeColor = stock.isPositive ? "#16a34a" : "#dc2626";
+        const changeSymbol = stock.isPositive ? "+" : "";
+        
+        return `
+      <tr>
+        <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
+          <strong style="color: #111827;">${stock.symbol}</strong><br/>
+          <span style="color: #6b7280; font-size: 12px;">${stock.company}</span>
+        </td>
+        <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">
+          $${stock.price}
+        </td>
+        <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; color: ${changeColor};">
+          ${changeSymbol}$${stock.change}<br/>
+          <span style="font-size: 12px;">(${changeSymbol}${stock.changePercent}%)</span>
+        </td>
+      </tr>
+    `;
+      }
+    )
+    .join("");
 
-      return {
-        subject: "Your Daily Watchlist Summary",
-        html: WATCHLIST_SUMMARY_EMAIL_TEMPLATE
-          .replace("{{name}}", name)
-          .replace("{{stocks}}", stocksHtml)
-          .replace("{{portfolioValue}}", portfolioSection),
-        text: `Daily Watchlist Summary for ${name}`,
-      };
-    }
+  const portfolioSection = totalPortfolioValue
+    ? `<p style="margin: 20px 0; padding: 15px; background: #f0fdf4; border-radius: 8px; text-align: center;">
+         <strong style="color: #166534;">Total Portfolio Value:</strong> 
+         <span style="font-size: 24px; color: #15803d;">$${totalPortfolioValue.toLocaleString()}</span>
+       </p>`
+    : "";
+
+  return {
+    subject: `Your Daily Watchlist Summary - ${date}`,
+    html: WATCHLIST_SUMMARY_EMAIL_TEMPLATE
+      .replace("{{name}}", name)
+      .replace("{{date}}", date)
+      .replace("{{stocks}}", stocksHtml)
+      .replace("{{portfolioValue}}", portfolioSection),
+    text: `Daily Watchlist Summary for ${name} - ${date}`,
+  };
+}
 
     default:
       // TypeScript should prevent this, but handle it anyway

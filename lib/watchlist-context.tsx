@@ -41,16 +41,16 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
     const action = isCurrentlyIn ? 'remove' : 'add';
 
     // Optimistic update
-    mutate(
-      '/api/watchlist',
-      {
-        items: isCurrentlyIn
-          ? watchlist.filter((s) => s !== upperSymbol)
-          : [...watchlist, upperSymbol],
-        details: watchlistDetails,
-      },
-      false
-    );
+mutate(
+  '/api/watchlist',
+  {
+    items: isCurrentlyIn
+      ? watchlist.filter((s: string) => s !== upperSymbol)
+      : [...watchlist, upperSymbol],
+    details: watchlistDetails,
+  },
+  false
+);
 
     try {
       const res = await fetch('/api/watchlist', {

@@ -115,7 +115,12 @@ export const sendDailyNewsSummary = inngest.createFunction(
                     userNewsSummaries.map(async ({ user, newsContent}) => {
                         if(!newsContent) return false;
 
-                        return await sendNewsSummaryEmail({ email: user.email, date: getFormattedTodayDate(), newsContent })
+                        return await sendNewsSummaryEmail({ 
+  email: user.email, 
+  name: user.name, 
+  date: getFormattedTodayDate(), 
+  newsContent 
+})
                     })
                 )
             })
@@ -124,7 +129,6 @@ export const sendDailyNewsSummary = inngest.createFunction(
     }
 )
 
-// NEW: Daily Watchlist Summary with Stock Prices
 export const sendDailyWatchlistSummary = inngest.createFunction(
     { id: 'daily-watchlist-summary' },
     [ { event: 'app/send.watchlist.summary' }, { cron: '0 9 * * *' } ], // 9 AM daily

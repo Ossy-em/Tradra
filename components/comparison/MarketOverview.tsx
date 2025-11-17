@@ -19,7 +19,7 @@ const popularStocks: Stock[] = [
 const MarketOverview = ({ onStockClick }: Props) => {
   return (
     <div className="space-y-6">
-      {/* Header Card */}
+   
       <div className="relative bg-white/[0.02] border border-white/5 rounded-xl p-6 backdrop-blur-sm">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">

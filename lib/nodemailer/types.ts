@@ -12,29 +12,28 @@ export interface BaseEmailData {
 
 export interface WelcomeEmailData extends BaseEmailData {
   name: string;
+  intro?: string;
 }
 
 export interface WatchlistSummaryData extends BaseEmailData {
   name: string;
+  date: string;
   stocks: Array<{
     symbol: string;
-    name: string;
-    currentPrice: number;
-    change: number;
-    changePercent: number;
+    company: string;
+    price: string; 
+    change: string; 
+    changePercent: string;
+    isPositive: boolean;
+    
   }>;
   totalPortfolioValue?: number;
 }
 
 export interface NewsSummaryData extends BaseEmailData {
   name: string;
-  articles: Array<{
-    title: string;
-    summary: string;
-    url: string;
-    source: string;
-    publishedAt: string;
-  }>;
+  date: string; 
+  newsContent: string; 
 }
 
 export interface StockAlertData extends BaseEmailData {

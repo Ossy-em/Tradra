@@ -46,18 +46,17 @@ export async function sendEmail<T extends EmailType>(
   }
 }
 
-// Export types and utilities
 export * from "./types";
 export { transporter, verifyTransporter } from "./transporter";
 export { generateEmailTemplate } from "./templates";
 
-// Helper functions for specific email types
 export async function sendWelcomeEmail({ 
   email, 
   name
 }: { 
   email: string; 
   name: string;
+  intro?: string;
 }) {
   return sendEmail({
     type: "welcome",
@@ -69,46 +68,45 @@ export async function sendWelcomeEmail({
 export async function sendNewsSummaryEmail({ 
   email, 
   name,
-  articles
+  date,
+  newsContent
 }: { 
   email: string; 
   name: string;
-  articles: Array<{
-    title: string;
-    summary: string;
-    url: string;
-    source: string;
-    publishedAt: string;
-  }>;
+  date: string;
+  newsContent: string;
 }) {
   return sendEmail({
     type: "news-summary",
     to: email,
-    data: { name, articles }
+    data: { name, date, newsContent }
   });
 }
 
 export async function sendWatchlistSummaryEmail({
   email,
   name,
+  date,
   stocks,
   totalPortfolioValue,
 }: {
   email: string;
   name: string;
+  date: string;
   stocks: Array<{
     symbol: string;
-    name: string;
-    currentPrice: number;
-    change: number;
-    changePercent: number;
+    company: string;
+    price: string;
+    change: string;
+    changePercent: string;
+    isPositive: boolean;
   }>;
   totalPortfolioValue?: number;
 }) {
   return sendEmail({
     type: "watchlist-summary",
     to: email,
-    data: { name, stocks, totalPortfolioValue }
+    data: { name, date, stocks, totalPortfolioValue }
   });
 }
 

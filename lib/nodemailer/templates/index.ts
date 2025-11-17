@@ -1,10 +1,8 @@
-// lib/nodemailer/templates/index.ts
 import { EmailTemplate, EmailType, EmailDataMap } from "../types";
 import { generateWelcomeEmail } from "./welcome";
 import { generateWatchlistSummaryEmail } from "./watchlist-summary";
 import { generateStockAlertEmail } from "./stock-alert";
 import { generateInactiveUserEmail } from "./inactive-user";
-
 
 export function generateEmailTemplate<T extends EmailType>(
   type: T,
@@ -12,16 +10,16 @@ export function generateEmailTemplate<T extends EmailType>(
 ): EmailTemplate {
   switch (type) {
     case "welcome":
-      return generateWelcomeEmail(data as any);
+      return generateWelcomeEmail(data as Omit<EmailDataMap["welcome"], "to">);
     
     case "watchlist-summary":
-      return generateWatchlistSummaryEmail(data as any);
+      return generateWatchlistSummaryEmail(data as Omit<EmailDataMap["watchlist-summary"], "to">);
     
     case "stock-alert":
-      return generateStockAlertEmail(data as any);
+      return generateStockAlertEmail(data as Omit<EmailDataMap["stock-alert"], "to">);
     
     case "inactive-user":
-      return generateInactiveUserEmail(data as any);
+      return generateInactiveUserEmail(data as Omit<EmailDataMap["inactive-user"], "to">);
     
     // TODO: Add these templates
     case "news-summary":
