@@ -32,6 +32,9 @@ declare global {
         validation?: RegisterOptions;
         disabled?: boolean;
         value?: string;
+           autoComplete?: string;
+           autoFocus?: boolean;
+
     };
 
     type Option = {

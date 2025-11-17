@@ -1,11 +1,39 @@
-// lib/nodemailer/templates/watchlist-summary.ts
+
 import { EmailTemplate, WatchlistSummaryData } from "../types";
-import { wrapEmailHTML, formatStockRow, formatPrice } from "../utils";
+import { wrapEmailHTML, formatPrice } from "../utils";
+
+function formatStockRow(stock: {
+  symbol: string;
+  company: string;
+  price: string;
+  change: string;
+  changePercent: string;
+  isPositive: boolean;
+}): string {
+  const changeColor = stock.isPositive ? "#16a34a" : "#dc2626";
+  const changeSymbol = stock.isPositive ? "+" : "";
+  
+  return `
+    <tr>
+      <td style="padding: 12px 8px;">
+        <strong style="color: #111827; font-size: 14px;">${stock.symbol}</strong><br/>
+        <span style="color: #6b7280; font-size: 12px;">${stock.company}</span>
+      </td>
+      <td style="padding: 12px 8px; text-align: right; color: #111827; font-weight: 600;">
+        $${stock.price}
+      </td>
+      <td style="padding: 12px 8px; text-align: right; color: ${changeColor}; font-weight: 600;">
+        ${changeSymbol}$${stock.change}<br/>
+        <span style="font-size: 12px;">(${changeSymbol}${stock.changePercent}%)</span>
+      </td>
+    </tr>
+  `;
+}
 
 export function generateWatchlistSummaryEmail(
   data: Omit<WatchlistSummaryData, "to">
 ): EmailTemplate {
-  const { name, stocks, totalPortfolioValue } = data;
+  const { name, date, stocks, totalPortfolioValue } = data;
 
   const stockRows = stocks.map(formatStockRow).join("");
 
@@ -23,7 +51,7 @@ export function generateWatchlistSummaryEmail(
       Your Daily Watchlist Summary
     </h2>
     <p style="margin: 0 0 24px; color: #6b7280; font-size: 14px;">
-      Hi ${name}, here's what happened with your stocks today.
+      Hi ${name}, here's what happened with your stocks on ${date}.
     </p>
 
     ${portfolioSection}
@@ -52,12 +80,12 @@ export function generateWatchlistSummaryEmail(
   const text = `
 Your Daily Watchlist Summary
 
-Hi ${name}, here's what happened with your stocks today.
+Hi ${name}, here's what happened with your stocks on ${date}.
 ${totalPortfolioValue ? `\nTotal Portfolio Value: ${formatPrice(totalPortfolioValue)}\n` : ""}
 ${stocks
   .map(
     (s) =>
-      `${s.symbol} (${s.name}): ${formatPrice(s.currentPrice)} (${s.change >= 0 ? "+" : ""}${formatPrice(s.change)}, ${s.changePercent >= 0 ? "+" : ""}${s.changePercent.toFixed(2)}%)`
+      `${s.symbol} (${s.company}): $${s.price} (${s.isPositive ? "+" : ""}$${s.change}, ${s.isPositive ? "+" : ""}${s.changePercent}%)`
   )
   .join("\n")}
 
@@ -67,7 +95,7 @@ View your full watchlist: ${process.env.NEXT_PUBLIC_APP_URL}/watchlist
   `.trim();
 
   return {
-    subject: `📊 Your Daily Watchlist Summary - ${new Date().toLocaleDateString()}`,
+    subject: `📊 Your Daily Watchlist Summary - ${date}`,
     html,
     text,
   };

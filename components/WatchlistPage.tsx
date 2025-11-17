@@ -2,9 +2,9 @@
 
 import { useWatchlist } from '@/hooks/useWatchlist';
 import WatchlistButton from '@/components/WatchlistButton';
-import { TrendingUp, Loader2, ArrowUp, ArrowDown, Sparkles } from 'lucide-react';
+import { TrendingUp, Loader2, ArrowUp, ArrowDown } from 'lucide-react'; // Removed Sparkles
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react'; // Added useCallback
 
 interface StockData {
   symbol: string;
@@ -18,13 +18,8 @@ export default function WatchlistPage() {
   const [stockData, setStockData] = useState<Record<string, StockData>>({});
   const [loadingPrices, setLoadingPrices] = useState(false);
 
-  useEffect(() => {
-    if (watchlist.length > 0) {
-      fetchStockPrices();
-    }
-  }, [watchlist]);
-
-  const fetchStockPrices = async () => {
+  // Wrap fetchStockPrices in useCallback to fix the dependency warning
+  const fetchStockPrices = useCallback(async () => {
     setLoadingPrices(true);
     try {
       const response = await fetch('/api/stocks/batch-quotes', {
@@ -42,7 +37,13 @@ export default function WatchlistPage() {
     } finally {
       setLoadingPrices(false);
     }
-  };
+  }, [watchlist]); // Add watchlist as dependency
+
+  useEffect(() => {
+    if (watchlist.length > 0) {
+      fetchStockPrices();
+    }
+  }, [watchlist, fetchStockPrices]); // Add fetchStockPrices to dependencies
 
   if (loading) {
     return (
@@ -155,8 +156,8 @@ export default function WatchlistPage() {
 
  
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-     {watchlistDetails.map((item) => {
-  const symbol = item.symbol;
+            {watchlistDetails.map((item) => {
+              const symbol = item.symbol;
               const stock = stockData[symbol];
               const isPositive = stock ? stock.change >= 0 : true;
 
@@ -172,12 +173,11 @@ export default function WatchlistPage() {
                         {symbol}
                       </h3>
                     </div>
-                      <WatchlistButton 
-                        symbol={symbol} 
-                         company={item.company}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity" 
-                      />
-               
+                    <WatchlistButton 
+                      symbol={symbol} 
+                      company={item.company}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity" 
+                    />
                   </div>
                   
                   {loadingPrices ? (
@@ -195,7 +195,6 @@ export default function WatchlistPage() {
                         {isPositive ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />}
                         <span>
                           {isPositive ? '+' : ''}{stock.change.toFixed(2)} ({isPositive ? '+' : ''}{stock.changePercent.toFixed(2)}%)
-                         
                         </span>
                       </div>
                     </div>

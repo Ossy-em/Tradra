@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { TrendingUp, Plus, Sparkles } from 'lucide-react';
+import { TrendingUp, Plus } from 'lucide-react';
 import { Stock } from '@/types/stocks';
 
 type Props = {

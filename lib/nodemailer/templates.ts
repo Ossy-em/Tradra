@@ -1221,3 +1221,156 @@ export const WATCHLIST_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </div>
 </body>
 </html>`;
+
+
+import { EmailType, EmailDataMap, EmailTemplate } from "./types";
+
+export function generateEmailTemplate<T extends EmailType>(
+  type: T,
+  data: Omit<EmailDataMap[T], "to">
+): EmailTemplate {
+  switch (type) {
+    case "welcome": {
+      const { name } = data as Omit<EmailDataMap["welcome"], "to">;
+      return {
+        subject: "Welcome to Tradra!",
+        html: WELCOME_EMAIL_TEMPLATE.replace("{{name}}", name),
+        text: `Welcome to Tradra, ${name}!`,
+      };
+    }
+
+    case "news-summary": {
+      const { name, articles } = data as Omit<EmailDataMap["news-summary"], "to">;
+      
+      // Generate articles HTML
+      const articlesHtml = articles
+        .map(
+          (article) => `
+          <div style="margin-bottom: 20px; padding: 15px; background: #f9fafb; border-radius: 8px;">
+            <h3 style="margin: 0 0 8px 0; color: #111827;">
+              <a href="${article.url}" style="color: #2563eb; text-decoration: none;">${article.title}</a>
+            </h3>
+            <p style="margin: 0 0 8px 0; color: #4b5563; font-size: 14px;">${article.summary}</p>
+            <div style="font-size: 12px; color: #6b7280;">
+              <span>${article.source}</span> • <span>${new Date(article.publishedAt).toLocaleDateString()}</span>
+            </div>
+          </div>
+        `
+        )
+        .join("");
+
+      return {
+        subject: "Your Daily News Summary",
+        html: NEWS_SUMMARY_EMAIL_TEMPLATE
+          .replace("{{name}}", name)
+          .replace("{{articles}}", articlesHtml),
+        text: `Daily News Summary for ${name}`,
+      };
+    }
+
+    case "stock-alert": {
+      const { name, symbol, stockName, alertType, triggerPrice, currentPrice } = 
+        data as Omit<EmailDataMap["stock-alert"], "to">;
+      
+      const template = alertType === "upper" 
+        ? STOCK_ALERT_UPPER_EMAIL_TEMPLATE 
+        : STOCK_ALERT_LOWER_EMAIL_TEMPLATE;
+      
+      const direction = alertType === "upper" ? "above" : "below";
+      
+      return {
+        subject: `Stock Alert: ${symbol} is ${direction} your target price`,
+        html: template
+          .replace("{{name}}", name)
+          .replace("{{symbol}}", symbol)
+          .replace("{{stockName}}", stockName)
+          .replace("{{triggerPrice}}", triggerPrice.toFixed(2))
+          .replace("{{currentPrice}}", currentPrice.toFixed(2)),
+        text: `${symbol} (${stockName}) is now ${direction} your target of $${triggerPrice.toFixed(2)}. Current price: $${currentPrice.toFixed(2)}`,
+      };
+    }
+
+    case "volume-alert": {
+      const { name, symbol, stockName, volume, averageVolume, percentIncrease } = 
+        data as Omit<EmailDataMap["volume-alert"], "to">;
+      
+      return {
+        subject: `Volume Alert: Unusual activity in ${symbol}`,
+        html: VOLUME_ALERT_EMAIL_TEMPLATE
+          .replace("{{name}}", name)
+          .replace("{{symbol}}", symbol)
+          .replace("{{stockName}}", stockName)
+          .replace("{{volume}}", volume.toLocaleString())
+          .replace("{{averageVolume}}", averageVolume.toLocaleString())
+          .replace("{{percentIncrease}}", percentIncrease.toFixed(1)),
+        text: `${symbol} (${stockName}) is experiencing unusual volume: ${volume.toLocaleString()} (${percentIncrease.toFixed(1)}% above average)`,
+      };
+    }
+
+    case "inactive-user": {
+      const { name, lastLoginDate, daysInactive } = 
+        data as Omit<EmailDataMap["inactive-user"], "to">;
+      
+      return {
+        subject: "We miss you at Tradra!",
+        html: INACTIVE_USER_REMINDER_EMAIL_TEMPLATE
+          .replace("{{name}}", name)
+          .replace("{{lastLoginDate}}", lastLoginDate)
+          .replace("{{daysInactive}}", daysInactive.toString()),
+        text: `Hi ${name}, we noticed you haven't logged in for ${daysInactive} days. We miss you!`,
+      };
+    }
+
+    case "watchlist-summary": {
+      const { name, stocks, totalPortfolioValue } = 
+        data as Omit<EmailDataMap["watchlist-summary"], "to">;
+      
+      // Generate stocks HTML
+      const stocksHtml = stocks
+        .map(
+          (stock) => {
+            const isPositive = stock.change >= 0;
+            const changeColor = isPositive ? "#16a34a" : "#dc2626";
+            const changeSymbol = isPositive ? "+" : "";
+            
+            return `
+          <tr>
+            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
+              <strong style="color: #111827;">${stock.symbol}</strong><br/>
+              <span style="color: #6b7280; font-size: 12px;">${stock.name}</span>
+            </td>
+            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">
+              $${stock.currentPrice.toFixed(2)}
+            </td>
+            <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; color: ${changeColor};">
+              ${changeSymbol}$${stock.change.toFixed(2)}<br/>
+              <span style="font-size: 12px;">(${changeSymbol}${stock.changePercent.toFixed(2)}%)</span>
+            </td>
+          </tr>
+        `;
+          }
+        )
+        .join("");
+
+      const portfolioSection = totalPortfolioValue
+        ? `<p style="margin: 20px 0; padding: 15px; background: #f0fdf4; border-radius: 8px; text-align: center;">
+             <strong style="color: #166534;">Total Portfolio Value:</strong> 
+             <span style="font-size: 24px; color: #15803d;">$${totalPortfolioValue.toLocaleString()}</span>
+           </p>`
+        : "";
+
+      return {
+        subject: "Your Daily Watchlist Summary",
+        html: WATCHLIST_SUMMARY_EMAIL_TEMPLATE
+          .replace("{{name}}", name)
+          .replace("{{stocks}}", stocksHtml)
+          .replace("{{portfolioValue}}", portfolioSection),
+        text: `Daily Watchlist Summary for ${name}`,
+      };
+    }
+
+    default:
+      // TypeScript should prevent this, but handle it anyway
+      throw new Error(`Unknown email type: ${type}`);
+  }
+}

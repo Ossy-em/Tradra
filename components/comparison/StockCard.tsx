@@ -1,7 +1,15 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { X, ExternalLink, ArrowUp, ArrowDown, TrendingUp } from 'lucide-react';
+import { X, ExternalLink, ArrowUp, ArrowDown } from 'lucide-react';
 import { Stock, StockQuote, TimeRange } from '@/types/stocks';
+import Link from 'next/link';
+
+interface StockMetrics {
+  marketCapitalization?: number;
+  peBasicExclExtraTTM?: number;
+  '52WeekHigh'?: number;
+  '52WeekLow'?: number;
+}
 
 type Props = {
   stock: Stock;
@@ -13,10 +21,10 @@ type Props = {
 const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const [quote, setQuote] = useState<StockQuote | null>(null);
-  const [metrics, setMetrics] = useState<any>(null);
+  const [metrics, setMetrics] = useState<StockMetrics | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch quote
+
   useEffect(() => {
     if (!apiKey) {
       setLoading(false);
@@ -44,7 +52,7 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
     return () => clearInterval(interval);
   }, [stock.symbol, apiKey]);
 
-  // Fetch metrics
+
   useEffect(() => {
     if (!apiKey) return;
 
@@ -54,7 +62,7 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
           `https://finnhub.io/api/v1/stock/metric?symbol=${stock.symbol}&metric=all&token=${apiKey}`
         );
         if (response.ok) {
-          const data = await response.json();
+          const data: { metric: StockMetrics } = await response.json();
           setMetrics(data.metric);
         }
       } catch (error) {
@@ -65,7 +73,7 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
     fetchMetrics();
   }, [stock.symbol, apiKey]);
 
-  // TradingView chart
+
   useEffect(() => {
     if (!chartContainerRef.current) return;
 
@@ -75,7 +83,7 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
     };
 
     chartContainerRef.current.innerHTML = '';
-    
+
     const script = document.createElement('script');
     script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
     script.async = true;
@@ -108,19 +116,20 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h3 className="text-2xl font-bold text-white">{stock.symbol}</h3>
-              <a
+
+              <Link
                 href={`https://www.tradingview.com/symbols/${stock.symbol}/`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors"
-                onClick={e => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
-              </a>
+              </Link>
             </div>
             <p className="text-sm text-gray-400 line-clamp-1 mb-3">{stock.name}</p>
-            
-            {/* Price Display */}
+
+
             {loading ? (
               <div className="h-12 bg-white/5 rounded-lg animate-pulse w-48" />
             ) : quote ? (
@@ -128,9 +137,8 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
                 <div className="text-3xl font-bold text-white">
                   ${quote.c.toFixed(2)}
                 </div>
-                <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-semibold ${
-                  quote.d >= 0 ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
-                }`}>
+                <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-semibold ${quote.d >= 0 ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
+                  }`}>
                   {quote.d >= 0 ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />}
                   <span>
                     {quote.d >= 0 ? '+' : ''}{quote.d.toFixed(2)} ({quote.dp >= 0 ? '+' : ''}{quote.dp.toFixed(2)}%)
@@ -141,15 +149,15 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
               <p className="text-sm text-gray-500">Price unavailable</p>
             )}
           </div>
-          
-          <button 
-            onClick={() => onRemove(stock.symbol)} 
+
+          <button
+            onClick={() => onRemove(stock.symbol)}
             className="w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center transition-colors group"
           >
             <X className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
           </button>
         </div>
-        
+
         <div className="flex gap-2">
           <span className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-xs text-gray-400">
             {stock.exchange}
@@ -182,7 +190,7 @@ const StockCard = ({ stock, onRemove, timeRange, apiKey }: Props) => {
           <p className="text-sm text-gray-500 text-center py-4">Metrics unavailable</p>
         )}
       </div>
-      
+
       {/* Hover glow */}
       <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-teal-500/0 to-purple-500/0 group-hover:from-teal-500/5 group-hover:to-purple-500/5 transition-all duration-300 pointer-events-none -z-10" />
     </div>
