@@ -3,6 +3,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2 } from 'lucide-react';
 import { Stock } from '@/types/stocks';
 
+
+interface FinnhubSearchResult {
+  symbol: string;
+  description?: string;
+  displaySymbol?: string;
+  type: string;
+}
+
 type Props = {
   onClose: () => void;
   onStockClick: (stock: Stock) => void;
@@ -38,11 +46,11 @@ const SearchModal = ({ onClose, onStockClick, isStockSelected, selectedCount, ap
             );
             
             if (response.ok) {
-              const data = await response.json();
+              const data: { result?: FinnhubSearchResult[] } = await response.json();
               const results: Stock[] = data.result
-                ?.filter((s: any) => s.type === 'Common Stock' || s.type === 'ETP')
+                ?.filter((s: FinnhubSearchResult) => s.type === 'Common Stock' || s.type === 'ETP')
                 .slice(0, 50)
-                .map((s: any) => ({
+                .map((s: FinnhubSearchResult) => ({
                   symbol: s.symbol,
                   name: s.description || s.symbol,
                   exchange: s.displaySymbol?.split(':')[0] || 'US',

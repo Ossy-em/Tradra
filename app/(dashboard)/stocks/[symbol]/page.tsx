@@ -1,7 +1,7 @@
 // app/stocks/[symbol]/page.tsx
-import dynamic from 'next/dynamic'; // ADD THIS
+import dynamic from 'next/dynamic'; 
 import TradingViewWidget from "@/components/TradingViewWidget";
-import WatchlistButton from "@/components/WatchlistButton";
+
 import {
   SYMBOL_INFO_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,

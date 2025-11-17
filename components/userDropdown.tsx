@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
-import NavItems from "@/components/NavItems";
+import NavItems from "@/components/NavItems";                 
 import { signOut } from "@/lib/actions/auth.actions";
 
 const UserDropdown = ({
@@ -57,7 +57,7 @@ const UserDropdown = ({
         <DropdownMenuLabel className="px-4 py-3">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10 border border-white/10">
-              <AvatarImage src="https://avatars.githubusercontent.com/u/153423955?s=280&v=4" />
+          
               <AvatarFallback className="bg-white/5 text-white text-sm font-semibold">
                 {user.name[0]}
               </AvatarFallback>
