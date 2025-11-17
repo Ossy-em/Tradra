@@ -10,7 +10,7 @@ import {
 } from '@/lib/actions/watchlist.actions';
 
 
-async function getUserEmail(): Promise<string | null> {
+async function getUserEmail(req?: NextRequest): Promise<string | null> {
   try {
     const session = await auth.api.getSession({ 
       headers: await headers() 
