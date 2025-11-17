@@ -33,6 +33,8 @@ declare global {
         disabled?: boolean;
         value?: string;
            autoComplete?: string;
+           autoFocus?: boolean;
+
     };
 
     type Option = {
