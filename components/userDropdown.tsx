@@ -37,7 +37,7 @@ const UserDropdown = ({
           className="flex items-center gap-2.5 text-gray-400 hover:text-white hover:bg-white/5 transition-colors px-2 sm:px-3 rounded-lg"
         >
           <Avatar className="h-8 w-8 border border-white/10">
-            <AvatarImage src="https://avatars.githubusercontent.com/u/153423955?s=280&v=4" />
+            {/* <AvatarImage src="https://avatars.githubusercontent.com/u/153423955?s=280&v=4" /> */}
             <AvatarFallback className="bg-white/5 text-white text-sm font-semibold">
               {user.name[0]}
             </AvatarFallback>

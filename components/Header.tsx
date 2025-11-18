@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import NavItems from "@/components/NavItems";
-import UserDropdown from "@/components/userDropdown";
+import UserDropdown from "@/components/UserDropdown";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 import {TradraLogo1} from "@/components/logo/TradraLog";
 
