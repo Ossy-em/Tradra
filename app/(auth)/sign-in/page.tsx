@@ -23,21 +23,29 @@ const SignIn = () => {
         mode: 'onBlur',
     });
 
-    const onSubmit = async (data: SignInFormData) => {
-        try {
-            const result = await signInWithEmail(data);
-            if(result.success) router.push('/dashboard');
-        } catch (e) {
-            console.error(e);
-            toast.error('Sign in failed', {
-                description: e instanceof Error ? e.message : 'Failed to sign in.'
-            });
-        }
-    };
+   const onSubmit = async (data: SignInFormData) => {
+    try {
+      const result = await signInWithEmail(data);
+      
+      if (result.success) {
+        toast.success('Sign in successful!');
+        router.push('/dashboard');
+      } else {
+        toast.error('Sign in failed', {
+          description: 'Invalid email or password. Please try again.'
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error('Sign in failed', {
+        description: e instanceof Error ? e.message : 'Invalid email or password. Please try again.'
+      });
+    }
+  };
 
     return (
         <div className="w-full max-w-md">
-            {/* Header */}
+
             <div className="mb-8">
                 <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">
                     Welcome back
