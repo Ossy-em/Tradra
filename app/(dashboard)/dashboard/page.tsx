@@ -1,9 +1,11 @@
-
+import type { Metadata } from "next";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import { MARKET_DATA_WIDGET_CONFIG, MARKET_OVERVIEW_WIDGET_CONFIG, TOP_STORIES_WIDGET_CONFIG } from "@/lib/constants";
 
 const linkURL = `https://s3.tradingview.com/external-embedding/embed-widget-`;
-
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 export default function Home() {
   return (
     <div className="flex min-h-screen home-wrapper">
