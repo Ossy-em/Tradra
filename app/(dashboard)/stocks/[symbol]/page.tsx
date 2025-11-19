@@ -1,4 +1,4 @@
-
+import type { Metadata } from "next";
 import dynamic from 'next/dynamic'; 
 import TradingViewWidget from "@/components/TradingViewWidget";
 
@@ -15,6 +15,9 @@ import {
 const LazyTradingViewWidget = dynamic(() => import('@/components/TradingViewWidget'))
 const LazyWatchlistButton = dynamic(() => import('@/components/WatchlistButton'))
 
+export const metadata: Metadata = {
+  title: "Stocks",
+};
 export default async function StockDetails({ params }: StockDetailsPageProps) {
   const { symbol } = await params;
   const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
