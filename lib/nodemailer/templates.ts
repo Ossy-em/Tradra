@@ -17,14 +17,13 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </noscript>
     <![endif]-->
     <style type="text/css">
-        /* Dark mode styles */
         @media (prefers-color-scheme: dark) {
             .email-container {
-                background-color: #141414 !important;
-                border: 1px solid #30333A !important;
+                background-color: rgba(255, 255, 255, 0.02) !important;
+                border: 1px solid rgba(255, 255, 255, 0.05) !important;
             }
             .dark-bg {
-                background-color: #050505 !important;
+                background-color: #000000 !important;
             }
             .dark-text {
                 color: #ffffff !important;
@@ -36,7 +35,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 color: #6b7280 !important;
             }
             .dark-border {
-                border-color: #30333A !important;
+                border-color: rgba(255, 255, 255, 0.05) !important;
             }
         }
         
@@ -53,107 +52,175 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
             }
             .mobile-text {
                 font-size: 14px !important;
-                line-height: 1.5 !important;
+                line-height: 1.6 !important;
             }
             .mobile-title {
-                font-size: 24px !important;
-                line-height: 1.3 !important;
+                font-size: 28px !important;
+                line-height: 1.2 !important;
             }
             .mobile-button {
                 width: 100% !important;
-                text-align: center !important;
             }
             .mobile-button a {
-                width: calc(100% - 64px) !important;
+                width: 100% !important;
                 display: block !important;
-                text-align: center !important;
             }
             .mobile-outer-padding {
                 padding: 20px 10px !important;
             }
             .dashboard-preview {
-                padding: 0 15px 30px 15px !important;
+                padding: 0 24px 24px 24px !important;
             }
         }
         @media only screen and (max-width: 480px) {
             .mobile-title {
-                font-size: 22px !important;
+                font-size: 24px !important;
             }
             .mobile-padding {
-                padding: 15px !important;
-            }
-            .mobile-header-padding {
-                padding: 15px 15px 8px 15px !important;
+                padding: 20px !important;
             }
         }
     </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #050505; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #050505;">
+<body style="margin: 0; padding: 0; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #000000;">
         <tr>
             <td align="center" class="mobile-outer-padding" style="padding: 40px 20px;">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="email-container" style="max-width: 600px; background-color: #141414; border-radius: 8px; border: 1px solid #30333A;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="email-container" style="max-width: 600px; background-color: rgba(255, 255, 255, 0.02); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);">
                     
                     <!-- Header with Logo -->
                     <tr>
-                        <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://ik.imagekit.io/a6fkjou7d/logo.png?updatedAt=1756378431634" alt="Signalist Logo" width="150" style="max-width: 100%; height: auto;">
+                        <td align="left" class="mobile-header-padding" style="padding: 40px 40px 32px 40px;">
+                            <!-- Tradra Logo (Text-based for email compatibility) -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="background: linear-gradient(135deg, #0FEDBE 0%, #0DD9A8 100%); width: 32px; height: 32px; border-radius: 8px; text-align: center; vertical-align: middle; padding: 6px;">
+                                        <span style="color: #000000; font-size: 18px; font-weight: bold; line-height: 1;">↗</span>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <span style="font-size: 24px; font-weight: bold; color: #ffffff; letter-spacing: -0.5px;">Tradra</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Dashboard Preview Image -->
                     <tr>
-                        <td align="center" class="dashboard-preview" style="padding: 40px 40px 0px 40px;">
-                            <img src="https://ik.imagekit.io/a6fkjou7d/dashboard-preview.png?updatedAt=1756378548102" alt="Signalist Dashboard Preview" width="100%" style="max-width: 520px; width: 100%; height: auto; border-radius: 12px; border: 1px solid #30333A;">
+                        <td align="center" class="dashboard-preview" style="padding: 0 40px 32px 40px;">
+                            <img  src="https://www.tradra.site/assets/images/dashboard.png" alt="Tradra Dashboard Preview" width="100%" style="max-width: 520px; width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
                         </td>
                     </tr>
                     
                     <!-- Main Content -->
                     <tr>
-                        <td class="mobile-padding" style="padding: 40px 40px 40px 40px;">
+                        <td class="mobile-padding" style="padding: 0 40px 40px 40px;">
+                            
+                            <!-- Welcome Badge -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 20px 0;">
+                                <tr>
+                                    <td style="background-color: rgba(13, 237, 190, 0.1); border: 1px solid rgba(13, 237, 190, 0.2); border-radius: 20px; padding: 6px 12px;">
+                                        <span style="font-size: 12px; color: #0FEDBE; font-weight: 500;">✨ Welcome to Tradra</span>
+                                    </td>
+                                </tr>
+                            </table>
                             
                             <!-- Welcome Heading -->
-                            <h1 class="mobile-title dark-text" style="margin: 0 0 30px 0; font-size: 24px; font-weight: 600; color: #FDD458; line-height: 1.2;">
-                                Welcome aboard {{name}}
+                            <h1 class="mobile-title dark-text" style="margin: 0 0 24px 0; font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2; letter-spacing: -0.5px;">
+                                Hey {{name}}, you're all set! 🎉
                             </h1>
                             
                             <!-- Intro Text -->
-                            {{intro}}  
-                            
-                            <!-- Feature List Label -->
-                            <p class="mobile-text dark-text-secondary" style="margin: 0 0 15px 0; font-size: 16px; line-height: 1.6; color: #CCDADC; font-weight: 600;">
-                                Here's what you can do right now:
+                            <p class="mobile-text dark-text-secondary" style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: #9ca3af;">
+                                Your Tradra account is ready to go. We've built this platform to help you make smarter investment decisions with real-time data, powerful analytics, and AI-powered insights.
                             </p>
                             
-                            <!-- Feature List -->
-                            <ul class="mobile-text dark-text-secondary" style="margin: 0 0 30px 0; padding-left: 20px; font-size: 16px; line-height: 1.6; color: #CCDADC;">
-                                <li style="margin-bottom: 12px;">Set up your watchlist to follow your favorite stocks</li>
-                                <li style="margin-bottom: 12px;">Create price and volume alerts so you never miss a move</li>
-                                <li style="margin-bottom: 12px;">Explore the dashboard for trends and the latest market news</li>
-                            </ul>
+                            <!-- Feature Cards -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 0 32px 0;">
+                                <tr>
+                                    <td style="padding: 20px; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding-bottom: 16px;">
+                                                    <span style="font-size: 14px; font-weight: 600; color: #ffffff;">Get Started in 3 Steps:</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                        <tr>
+                                                            <td style="width: 24px; height: 24px; background: linear-gradient(135deg, #0FEDBE 0%, #0DD9A8 100%); border-radius: 6px; text-align: center; vertical-align: middle;">
+                                                                <span style="color: #000000; font-size: 12px; font-weight: bold;">1</span>
+                                                            </td>
+                                                            <td style="padding-left: 12px;">
+                                                                <span style="font-size: 14px; color: #9ca3af; line-height: 1.5;">Build your watchlist with stocks you care about</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                        <tr>
+                                                            <td style="width: 24px; height: 24px; background: linear-gradient(135deg, #0FEDBE 0%, #0DD9A8 100%); border-radius: 6px; text-align: center; vertical-align: middle;">
+                                                                <span style="color: #000000; font-size: 12px; font-weight: bold;">2</span>
+                                                            </td>
+                                                            <td style="padding-left: 12px;">
+                                                                <span style="font-size: 14px; color: #9ca3af; line-height: 1.5;">Compare stocks side-by-side to find opportunities</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                        <tr>
+                                                            <td style="width: 24px; height: 24px; background: linear-gradient(135deg, #0FEDBE 0%, #0DD9A8 100%); border-radius: 6px; text-align: center; vertical-align: middle;">
+                                                                <span style="color: #000000; font-size: 12px; font-weight: bold;">3</span>
+                                                            </td>
+                                                            <td style="padding-left: 12px;">
+                                                                <span style="font-size: 14px; color: #9ca3af; line-height: 1.5;">Stay updated with real-time market insights</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                             
                             <!-- Additional Text -->
-                            <p class="mobile-text dark-text-secondary" style="margin: 0 0 40px 0; font-size: 16px; line-height: 1.6; color: #CCDADC;">
-                                We'll keep you informed with timely updates, insights, and alerts — so you can focus on making the right calls.
+                            <p class="mobile-text dark-text-secondary" style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: #9ca3af;">
+                                We're here to help you make confident decisions. If you have any questions, just reply to this email — we read every message.
                             </p>
                             
                             <!-- CTA Button -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 40px 0; width: 100%;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="mobile-button" style="margin: 0 0 32px 0; width: 100%;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://stock-market-dev.vercel.app/" style="display: block; width: 100%; background: linear-gradient(135deg, #FDD458 0%, #E8BA40 100%); color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center; box-sizing: border-box;">
-                                            Go to Dashboard
+                                        <a href="https://tradra.site/dashboard" style="display: inline-block; background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; line-height: 1.5; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);">
+                                            Open Dashboard →
                                         </a>
                                     </td>
                                 </tr>
                             </table>
                             
+                            <!-- Divider -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 32px 0;">
+                                <tr>
+                                    <td style="border-top: 1px solid rgba(255, 255, 255, 0.05);"></td>
+                                </tr>
+                            </table>
+                            
                             <!-- Footer Text -->
-                            <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
-                               Signalist HQ, 200 Market Street, San Francisco, CA 94105<br>
-                                <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                <a href="https://stock-market-dev.vercel.app/" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a><br>
-                                © 2025 Signalist
+                            <p class="mobile-text dark-text-muted" style="margin: 0; font-size: 13px; line-height: 1.6; color: #6b7280; text-align: center;">
+                                Tradra • Making smart investing accessible<br>
+                                <a href="#" style="color: #6b7280; text-decoration: underline;">Unsubscribe</a> · 
+                                <a href="https://tradra.site" style="color: #6b7280; text-decoration: underline;">Visit Website</a><br>
+                                © 2025 Tradra. All rights reserved.
                             </p>
                         </td>
                     </tr>
@@ -172,7 +239,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="x-apple-disable-message-reformatting">
-    <title>Market News Summary Today</title>
+    <title>Today's Market Summary</title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -184,14 +251,13 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </noscript>
     <![endif]-->
     <style type="text/css">
-        /* Dark mode styles */
         @media (prefers-color-scheme: dark) {
             .email-container {
-                background-color: #141414 !important;
-                border: 1px solid #30333A !important;
+                background-color: rgba(255, 255, 255, 0.02) !important;
+                border: 1px solid rgba(255, 255, 255, 0.05) !important;
             }
             .dark-bg {
-                background-color: #050505 !important;
+                background-color: #000000 !important;
             }
             .dark-text {
                 color: #ffffff !important;
@@ -203,11 +269,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 color: #6b7280 !important;
             }
             .dark-border {
-                border-color: #30333A !important;
-            }
-            .dark-cta {
-                background-color: #1f2937 !important;
-                border: 1px solid #374151 !important;
+                border-color: rgba(255, 255, 255, 0.05) !important;
             }
         }
         
@@ -224,11 +286,11 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
             }
             .mobile-text {
                 font-size: 14px !important;
-                line-height: 1.5 !important;
+                line-height: 1.6 !important;
             }
             .mobile-title {
-                font-size: 24px !important;
-                line-height: 1.3 !important;
+                font-size: 28px !important;
+                line-height: 1.2 !important;
             }
             .mobile-news-title {
                 font-size: 16px !important;
@@ -240,58 +302,99 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
         }
         @media only screen and (max-width: 480px) {
             .mobile-title {
-                font-size: 22px !important;
+                font-size: 24px !important;
             }
             .mobile-padding {
-                padding: 15px !important;
-            }
-            .mobile-header-padding {
-                padding: 15px 15px 8px 15px !important;
+                padding: 20px !important;
             }
         }
     </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #050505; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #050505;">
+<body style="margin: 0; padding: 0; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #000000;">
         <tr>
             <td align="center" class="mobile-outer-padding" style="padding: 40px 20px;">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="email-container" style="max-width: 600px; background-color: #141414; border-radius: 8px; border: 1px solid #30333A;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="email-container" style="max-width: 600px; background-color: rgba(255, 255, 255, 0.02); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);">
                     
                     <!-- Header with Logo -->
                     <tr>
-                        <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://ik.imagekit.io/a6fkjou7d/logo.png?updatedAt=1756378431634" alt="Signalist Logo" width="150" style="max-width: 100%; height: auto;">
+                        <td align="left" class="mobile-header-padding" style="padding: 40px 40px 32px 40px;">
+                            <!-- Tradra Logo -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="background: linear-gradient(135deg, #0FEDBE 0%, #0DD9A8 100%); width: 32px; height: 32px; border-radius: 8px; text-align: center; vertical-align: middle; padding: 6px;">
+                                        <span style="color: #000000; font-size: 18px; font-weight: bold; line-height: 1;">↗</span>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <span style="font-size: 24px; font-weight: bold; color: #ffffff; letter-spacing: -0.5px;">Tradra</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Main Content -->
                     <tr>
-                        <td class="mobile-padding" style="padding: 40px 40px 40px 40px;">
+                        <td class="mobile-padding" style="padding: 0 40px 40px 40px;">
+                            
+                            <!-- News Badge -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 20px 0;">
+                                <tr>
+                                    <td style="background-color: rgba(13, 237, 190, 0.1); border: 1px solid rgba(13, 237, 190, 0.2); border-radius: 20px; padding: 6px 12px;">
+                                        <span style="font-size: 12px; color: #0FEDBE; font-weight: 500;">📰 Daily Market Summary</span>
+                                    </td>
+                                </tr>
+                            </table>
                             
                             <!-- Header -->
-                            <h1 class="mobile-title dark-text" style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #FDD458; line-height: 1.2;">
-                                Market News Summary Today
+                            <h1 class="mobile-title dark-text" style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2; letter-spacing: -0.5px;">
+                                Today's Market News
                             </h1>
                             
                             <!-- Date -->
-                            <p class="mobile-text dark-text-muted" style="margin: 0 0 30px 0; font-size: 14px; line-height: 1.4; color: #6b7280;">
+                            <p class="mobile-text dark-text-muted" style="margin: 0 0 32px 0; font-size: 14px; line-height: 1.4; color: #6b7280;">
                                 {{date}}
                             </p>
                             
-                            <!-- News Summary -->
-                            {{newsContent}}
+                            <!-- News Summary Container -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 0 32px 0;">
+                                <tr>
+                                    <td style="padding: 24px; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                                        {{newsContent}}
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- CTA Button -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 32px 0; width: 100%;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://tradra.site/dashboard" style="display: inline-block; background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; line-height: 1.5; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);">
+                                            View Full Dashboard →
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Divider -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 32px 0;">
+                                <tr>
+                                    <td style="border-top: 1px solid rgba(255, 255, 255, 0.05);"></td>
+                                </tr>
+                            </table>
                             
                             <!-- Footer Text -->
-                            <div style="text-align: center; margin: 40px 0 0 0;">
-                                <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    You're receiving this because you subscribed to Signalist news updates.
+                            <div style="text-align: center;">
+                                <p style="margin: 0 0 12px 0; font-size: 13px; line-height: 1.6; color: #6b7280;">
+                                    You're receiving this because you subscribed to Tradra news updates.
                                 </p>
-                                <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                    <a href="https://signalist.app" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a>
+                                <p style="margin: 0 0 12px 0; font-size: 13px; line-height: 1.6; color: #6b7280;">
+                                    <a href="#" style="color: #6b7280; text-decoration: underline;">Unsubscribe</a> · 
+                                    <a href="https://tradra.site" style="color: #6b7280; text-decoration: underline;">Visit Website</a> · 
+                                    <a href="https://tradra.site/dashboard" style="color: #6b7280; text-decoration: underline;">Dashboard</a>
                                 </p>
-                                <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Signalist
+                                <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #6b7280;">
+                                    © 2025 Tradra. All rights reserved.
                                 </p>
                             </div>
                         </td>
@@ -303,6 +406,46 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </table>
 </body>
 </html>`;
+
+// News item template helper (use this to format individual news items in {{newsContent}})
+export const NEWS_ITEM_TEMPLATE = `
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 0 20px 0;">
+    <tr>
+        <td>
+            <!-- News Item -->
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td style="padding: 16px; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                        <!-- Category Badge -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 12px 0;">
+                            <tr>
+                                <td style="background-color: rgba(13, 237, 190, 0.1); border-radius: 12px; padding: 4px 10px;">
+                                    <span style="font-size: 11px; color: #0FEDBE; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">{{category}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- News Title -->
+                        <h3 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 600; color: #ffffff; line-height: 1.3;">
+                            {{title}}
+                        </h3>
+                        
+                        <!-- News Summary -->
+                        <p style="margin: 0 0 12px 0; font-size: 14px; line-height: 1.6; color: #9ca3af;">
+                            {{summary}}
+                        </p>
+                        
+                        <!-- Read More Link -->
+                        <a href="{{url}}" style="display: inline-block; font-size: 14px; color: #0FEDBE; text-decoration: none; font-weight: 500;">
+                            Read more →
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+`;
 
 export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
 <html lang="en">
@@ -493,14 +636,14 @@ export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                              <!-- Footer Text -->
                             <div style="text-align: center; margin: 40px 0 0 0;">
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    You're receiving this because you subscribed to Signalist news updates.
+                                    You're receiving this because you subscribed to Tradra news updates.
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
                                     <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                    <a href="https://signalist.app" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a>
+                                    <a href="https://www.tradra.site/" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Signalist
+                                    © 2025 Tradra. All rights reserved.
                                 </p>
                             </div>
                         </td>
@@ -702,14 +845,14 @@ export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                              <!-- Footer Text -->
                             <div style="text-align: center; margin: 40px 0 0 0;">
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    You're receiving this because you subscribed to Signalist news updates.
+                                    You're receiving this because you subscribed to Tradra news updates.
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
                                     <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                    <a href="https://signalist.app" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a>
+                                    <a href="https://www.tradra.site/" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Signalist
+                                    © 2025 Tradra. All rights reserved.
                                 </p>
                             </div>
                         </td>
@@ -922,14 +1065,14 @@ export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                              <!-- Footer Text -->
                             <div style="text-align: center; margin: 40px 0 0 0;">
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    You're receiving this because you subscribed to Signalist news updates.
+                                    You're receiving this because you subscribed to Tradra news updates.
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
                                     <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                    <a href="https://signalist.app" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a>
+                                    <a href="https://www.tradra.site/" style="color: #CCDADC !important; text-decoration: underline;">Visit Tradra</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Signalist
+                                    © 2025 Tradra. All rights reserved.
                                 </p>
                             </div>
                         </td>
@@ -1057,7 +1200,7 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             
                             <!-- Main Message -->
                             <p class="mobile-text dark-text-secondary" style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; color: #CCDADC;">
-                                We noticed you haven't visited Signalist in a while. The markets have been moving, and there might be some opportunities you don't want to miss!
+                                We noticed you haven't visited Tradra in a while. The markets have been moving, and there might be some opportunities you don't want to miss!
                             </p>
 
                             <!-- Additional Motivation -->
@@ -1093,10 +1236,10 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
                                     <a href="{{unsubscribeUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                    <a href="{{dashboardUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a>
+                                    <a href="{{dashboardUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Tradra</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Signalist
+                                    © 2025 Tradra. All rights reserved.
                                 </p>
                             </div>
                         </td>
@@ -1212,7 +1355,7 @@ export const WATCHLIST_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
                         Stay informed. Trade smart.
                     </p>
                     <p style="margin: 0; font-size: 13px; color: #9ca3af;">
-                        You're receiving this because you have an active watchlist on Signalist
+                        You're receiving this because you have an active watchlist on Tradra.
                     </p>
                 </td>
             </tr>
