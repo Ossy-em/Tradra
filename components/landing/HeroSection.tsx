@@ -36,7 +36,7 @@ const HeroSection = () => {
               className="group relative px-8 py-3.5 bg-white text-black font-medium rounded-lg overflow-hidden transition-all hover:scale-105 hover:shadow-xl hover:shadow-white/20"
             >
               <span className="relative z-10 flex items-center gap-2">
-                Start Free Trial
+                Start Now
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
             </Link>
@@ -50,16 +50,15 @@ const HeroSection = () => {
           </div>
 
           <p className="mt-8 text-xs text-gray-500">
-            No credit card required • Cancel anytime • 14-day free trial
+            No credit card required 
           </p>
         </div>
 
-        {/* Dashboard Preview */}
         <div className="mt-20 max-w-5xl mx-auto">
           <div className="relative">
             <div className="relative rounded-xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-1 backdrop-blur-sm">
               <div className="rounded-lg bg-black/40 backdrop-blur-xl border border-white/5 overflow-hidden">
-                {/* Browser Chrome */}
+  
                 <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
                   <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -73,9 +72,9 @@ const HeroSection = () => {
                   </div>
                 </div>
                 
-                {/* Dashboard Content - NOW WITH REAL DATA */}
+
                 <div className="aspect-[16/10] bg-gradient-to-br from-gray-900 via-black to-gray-900 p-6">
-                  {/* Market Stats Cards */}
+          
                   <div className="grid grid-cols-3 gap-3 mb-4">
                     <MarketStatCard 
                       title="S&P 500"
@@ -97,9 +96,9 @@ const HeroSection = () => {
                     />
                   </div>
 
-                  {/* Chart Area */}
+        
                   <div className="h-40 bg-white/5 rounded-lg border border-white/5 mb-4 p-4 relative overflow-hidden">
-                    {/* Mock Chart Line */}
+               
                     <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none">
                       <defs>
                         <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -125,9 +124,9 @@ const HeroSection = () => {
                     </div>
                   </div>
 
-                  {/* Watchlist & News Grid */}
+                
                   <div className="grid grid-cols-2 gap-3">
-                    {/* Watchlist */}
+              
                     <div className="h-28 bg-white/5 rounded-lg border border-white/5 p-3">
                       <div className="text-xs text-gray-400 mb-2 font-medium">My Watchlist</div>
                       <div className="space-y-1.5">
@@ -137,7 +136,6 @@ const HeroSection = () => {
                       </div>
                     </div>
 
-                    {/* Top Movers */}
                     <div className="h-28 bg-white/5 rounded-lg border border-white/5 p-3">
                       <div className="text-xs text-gray-400 mb-2 font-medium">Top Movers</div>
                       <div className="space-y-1.5">
@@ -151,7 +149,6 @@ const HeroSection = () => {
               </div>
             </div>
 
-            {/* Floating Badges */}
             <div className="absolute -top-6 -right-6 px-4 py-2 bg-black/40 backdrop-blur-xl border border-white/10 rounded-lg animate-float">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
@@ -194,7 +191,7 @@ const HeroSection = () => {
   );
 };
 
-// Market Stat Card Component
+
 const MarketStatCard = ({ title, value, change, positive }: {
   title: string;
   value: string;
@@ -213,7 +210,6 @@ const MarketStatCard = ({ title, value, change, positive }: {
   </div>
 );
 
-// Watchlist Item Component
 const WatchlistItem = ({ symbol, price, change, positive }: {
   symbol: string;
   price: string;
