@@ -40,10 +40,10 @@ const SignUp = () => {
             fullName: '',
             email: '',
             password: '',
-            country: 'US',
-            investmentGoals: 'Growth',
-            riskTolerance: 'Medium',
-            preferredIndustry: 'Technology'
+            // country: 'US',
+            // investmentGoals: 'Growth',
+            // riskTolerance: 'Medium',
+            // preferredIndustry: 'Technology'
         },
         mode: 'onBlur'
     });
@@ -150,7 +150,7 @@ const SignUp = () => {
             // Success case
             if (result.success) {
                 toast.success('Account created!', {
-                    description: 'Welcome to StockAI. Setting up your dashboard...',
+                    description: 'Welcome to Tradra. Setting up your dashboard...',
                     icon: <CheckCircle2 className="w-4 h-4" />
                 });
             
@@ -185,7 +185,7 @@ const SignUp = () => {
 
     return (
         <div className="w-full max-w-md">
-            {/* Header */}
+
             <div className="mb-8">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full mb-4">
                     <Sparkles className="w-3.5 h-3.5 text-teal-400" />
@@ -202,7 +202,7 @@ const SignUp = () => {
 
             <div className="space-y-5">
                 <fieldset disabled={isSubmitting} className="space-y-5">
-                    {/* Personal Information Section */}
+           
                     <div className="space-y-5">
                         <div className="flex items-center gap-2 pb-2">
                             <div className="w-6 h-px bg-white/10" />
@@ -287,7 +287,7 @@ const SignUp = () => {
                                 </button>
                             </div>
                             
-                            {/* Password Strength Indicator */}
+                   
                             {password && (
                                 <div className="space-y-1.5">
                                     <div className="flex gap-1">
