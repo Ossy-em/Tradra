@@ -1,4 +1,4 @@
-// components/WaitlistModal.tsx
+
 'use client';
 import { useState } from 'react';
 import { X, Loader2, CheckCircle2, Sparkles, Zap, Shield, TrendingUp } from 'lucide-react';
@@ -58,10 +58,10 @@ export default function WaitlistModal({
         className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl max-w-lg w-full relative overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Background Glow */}
+
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-teal-500/20 rounded-full blur-3xl -z-10" />
 
-        {/* Close Button */}
+
         <button 
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
@@ -86,7 +86,7 @@ export default function WaitlistModal({
           </div>
         ) : (
           <>
-            {/* Header */}
+     
             <div className="p-8 pb-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full mb-6">
                 <Sparkles className="w-3.5 h-3.5 text-teal-400" />
@@ -101,7 +101,7 @@ export default function WaitlistModal({
               </p>
             </div>
 
-            {/* Features */}
+
             <div className="px-8 pb-6 grid grid-cols-2 gap-3">
               <div className="flex items-center gap-2 px-3 py-2 bg-white/[0.02] border border-white/5 rounded-lg">
                 <TrendingUp className="w-4 h-4 text-teal-400 flex-shrink-0" />
@@ -121,7 +121,7 @@ export default function WaitlistModal({
               </div>
             </div>
 
-            {/* Form */}
+
             <div className="px-8 pb-8">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
