@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from 'react';
 import { Shield, Zap, Users, Award } from 'lucide-react';
 import Link from 'next/link';
+import WaitlistModal from '@/components/WaitlistModal';
 
 const badges = [
   { icon: Shield, text: 'Bank-level Security' },
@@ -9,12 +13,13 @@ const badges = [
 ];
 
 const TrustBadges = () => {
+   const [showWaitlist, setShowWaitlist] = useState(false);
   return (
     <section id="pricing" className="relative py-20 px-4 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-950 to-black" />
       
       <div className="container relative">
-        {/* Trust Badges */}
+
         <div className="max-w-5xl mx-auto mb-20">
           <div className="text-center mb-12">
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
@@ -41,10 +46,9 @@ const TrustBadges = () => {
           </div>
         </div>
 
-        {/* Pricing Card */}
         <div className="max-w-2xl mx-auto">
           <div className="relative">
-            {/* Glow effect */}
+
             <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-purple-500/10 rounded-xl blur-xl" />
             
             <div className="relative bg-white/[0.02] border border-white/10 rounded-xl p-8 md:p-12 backdrop-blur-sm">
@@ -72,17 +76,27 @@ const TrustBadges = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Link 
-                    href="/auth/sign-up"
-                    className="px-8 py-3 bg-white text-black font-medium rounded-lg hover:scale-105 transition-transform"
-                  >
-                    Get Started Free
-                  </Link>
-                  <button className="px-8 py-3 bg-white/5 text-white border border-white/10 font-medium rounded-lg hover:bg-white/10 transition-colors">
-                    Join Waitlist for Pro
-                  </button>
-                </div>
+                  <>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <Link 
+          href="/auth/sign-up"
+          className="px-8 py-3 bg-white text-black font-medium rounded-lg hover:scale-105 transition-transform"
+        >
+          Get Started Free
+        </Link>
+        <button 
+          onClick={() => setShowWaitlist(true)}
+          className="px-8 py-3 bg-white/5 text-white border border-white/10 font-medium rounded-lg hover:bg-white/10 transition-colors"
+        >
+          Join Waitlist for Pro
+        </button>
+      </div>
+
+      <WaitlistModal 
+        isOpen={showWaitlist} 
+        onClose={() => setShowWaitlist(false)} 
+      />
+    </>
 
                 <p className="mt-6 text-xs text-gray-500">
                   Free tier includes everything you need to track and analyze stocks
