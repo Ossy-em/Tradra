@@ -67,16 +67,16 @@ const FeaturesSection = () => {
                   animationDelay: `${index * 100}ms`,
                 }}
               >
-                {/* Icon */}
+            
                 <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center mb-5 group-hover:bg-white/10 group-hover:scale-110 transition-all duration-300">
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 
-                {/* Content */}
+         
                 <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
 
-                {/* Hover glow */}
+            
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-teal-500/0 to-purple-500/0 group-hover:from-teal-500/5 group-hover:to-purple-500/5 transition-all duration-300 -z-10" />
               </div>
             );
