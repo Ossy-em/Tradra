@@ -1,10 +1,11 @@
 import {inngest} from "@/lib/inngest/client";
 import {NEWS_SUMMARY_EMAIL_PROMPT, PERSONALIZED_WELCOME_EMAIL_PROMPT} from "@/lib/inngest/prompts";
-import {sendNewsSummaryEmail, sendWelcomeEmail, sendWatchlistSummaryEmail} from "@/lib/nodemailer";
+import {sendEmail, sendNewsSummaryEmail, sendWelcomeEmail, sendWatchlistSummaryEmail} from "@/lib/nodemailer";
 import {getAllUsersForNewsEmail} from "@/lib/actions/user.actions";
 import { getWatchlistSymbolsByEmail, getWatchlistByEmail } from "@/lib/actions/watchlist.actions";
 import { getNews, getBatchQuotes } from "@/lib/actions/finnhub.actions";
 import { getFormattedTodayDate } from "@/lib/utils";
+import nodemailer from 'nodemailer';
 
 type UserForNewsEmail = {
     email: string;
@@ -23,6 +24,91 @@ export const sendSignUpEmail = inngest.createFunction(
         `
 
         const prompt = PERSONALIZED_WELCOME_EMAIL_PROMPT.replace('{{userProfile}}', userProfile)
+
+        // Notify admin about new signup with plain text email
+        await step.run('notify-admin', async () => {
+            const { email, name, country, investmentGoals, riskTolerance, preferredIndustry } = event.data;
+            
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.NODEMAILER_EMAIL,
+                    pass: process.env.NODEMAILER_PASSWORD,
+                }
+            });
+
+            return await transporter.sendMail({
+                from: process.env.NODEMAILER_EMAIL,
+                to: 'emosinachi@gmail.com',
+                subject: `🎉 New Signup: ${name}`,
+                text: `
+New user just signed up on Tradra!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+USER DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Name: ${name}
+Email: ${email}
+Country: ${country}
+
+Investment Goals: ${investmentGoals}
+Risk Tolerance: ${riskTolerance}
+Preferred Industry: ${preferredIndustry}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Check MongoDB for full details.
+                `,
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+                        <div style="background-color: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h2 style="color: #10b981; margin-top: 0;">🎉 New Signup on Tradra!</h2>
+                            
+                            <div style="background-color: #f3f4f6; padding: 20px; border-radius: 6px; margin: 20px 0;">
+                                <h3 style="margin-top: 0; color: #374151;">User Details</h3>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #6b7280; font-weight: 600;">Name:</td>
+                                        <td style="padding: 8px 0; color: #111827;">${name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #6b7280; font-weight: 600;">Email:</td>
+                                        <td style="padding: 8px 0; color: #111827;">${email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #6b7280; font-weight: 600;">Country:</td>
+                                        <td style="padding: 8px 0; color: #111827;">${country}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div style="background-color: #f3f4f6; padding: 20px; border-radius: 6px; margin: 20px 0;">
+                                <h3 style="margin-top: 0; color: #374151;">Investment Profile</h3>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #6b7280; font-weight: 600;">Goals:</td>
+                                        <td style="padding: 8px 0; color: #111827;">${investmentGoals}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #6b7280; font-weight: 600;">Risk Tolerance:</td>
+                                        <td style="padding: 8px 0; color: #111827;">${riskTolerance}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #6b7280; font-weight: 600;">Preferred Industry:</td>
+                                        <td style="padding: 8px 0; color: #111827;">${preferredIndustry}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+                                Check MongoDB for full details.
+                            </p>
+                        </div>
+                    </div>
+                `
+            });
+        });
 
         const response = await step.ai.infer('generate-welcome-intro', {
             model: step.ai.models.gemini({ model: 'gemini-2.5-flash-lite' }),
@@ -116,11 +202,11 @@ export const sendDailyNewsSummary = inngest.createFunction(
                         if(!newsContent) return false;
 
                         return await sendNewsSummaryEmail({ 
-  email: user.email, 
-  name: user.name, 
-  date: getFormattedTodayDate(), 
-  newsContent 
-})
+                            email: user.email, 
+                            name: user.name, 
+                            date: getFormattedTodayDate(), 
+                            newsContent 
+                        })
                     })
                 )
             })
