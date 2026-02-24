@@ -32,11 +32,11 @@ const MarketPreview = () => {
               <div className="rounded-lg bg-black/40 backdrop-blur-xl border border-white/5 overflow-hidden">
                 {/* Browser chrome */}
                 <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
-                  <div className="flex gap-1.5">
+                  {/* <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
                     <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-                  </div>
+                  </div> */}
                   <div className="flex-1 mx-4">
                     <div className="h-6 bg-white/5 rounded text-xs flex items-center px-3 text-gray-500">
                       tradra.app/market-overview
