@@ -37,7 +37,7 @@ export function generateWelcomeEmail(data: Omit<WelcomeEmailData, "to">): EmailT
     </div>
     
     <div style="text-align: center; margin: 32px 0 24px;">
-      <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" 
+      <a href="https://www.tradra.site/" 
          style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">
         Get Started
       </a>
